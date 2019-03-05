@@ -19,16 +19,6 @@ namespace WebAppHttp.Controllers
         {
             db = context;
         }
-        private List<Email> getData()
-        {
-
-            List<Email> Le = new List<Email>();
-            Le = db.Emails.ToList();
-
-            List<Recipient> lr = db.Recipients.ToList();
-
-            return Le;
-        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Email>>> Get()
         {
