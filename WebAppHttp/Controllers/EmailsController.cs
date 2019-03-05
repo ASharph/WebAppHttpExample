@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAppHttp.Model;
 
 namespace WebAppHttp.Controllers
@@ -29,17 +30,17 @@ namespace WebAppHttp.Controllers
             return Le;
         }
         [HttpGet]
-        public List<Email> Get()
+        public async Task<ActionResult<IEnumerable<Email>>> Get()
         {
-            return getData();
+            return await db.Emails.Include(p => p.Recipients).ToListAsync();
         }
 
         [HttpPost]
-        public void Post([FromBody] Email value)
+        public async Task PostTodoItem(Email value)
         {
             EmailSender.Send(ref value);
-            db.Add(value);
-            db.SaveChanges();
+            db.Emails.Add(value);
+            await db.SaveChangesAsync();
         }
     }
 }
